@@ -1,18 +1,19 @@
-import 'package:emotion_sync/registerpage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:emotion_sync/colors.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({Key? key});
+class RegisterPage extends StatefulWidget {
+  const RegisterPage({Key? key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<RegisterPage> createState() => _RegisterPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _password2Controller = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -29,18 +30,7 @@ class _LoginPageState extends State<LoginPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Container(
-              width: 180,
-              height: 165,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10),
-                image: const DecorationImage(
-                  image: AssetImage('lib/assets/images/ESlogo.png'),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            const SizedBox(height: 80),
+            const SizedBox(height: 20),
             TextField(
               controller: _usernameController,
               decoration: InputDecoration(
@@ -50,10 +40,26 @@ class _LoginPageState extends State<LoginPage> {
             ),
             const SizedBox(height: 20),
             TextField(
+              controller: _emailController,
+              decoration: InputDecoration(
+                hintText: 'Email',
+                hintStyle: GoogleFonts.frederickaTheGreat(),
+              ),
+            ),
+            const SizedBox(height: 20),
+            TextField(
               controller: _passwordController,
               obscureText: true,
               decoration: InputDecoration(
                 hintText: 'Password',
+                hintStyle: GoogleFonts.frederickaTheGreat(),
+              ),
+            ),
+            const SizedBox(height: 20),
+            TextField(
+              controller: _password2Controller,
+              decoration: InputDecoration(
+                hintText: 'Confirm Password',
                 hintStyle: GoogleFonts.frederickaTheGreat(),
               ),
             ),
@@ -72,25 +78,12 @@ class _LoginPageState extends State<LoginPage> {
                   textStyle: const TextStyle(
                       fontSize: 20, fontWeight: FontWeight.bold)),
               child: Text(
-                'Submit',
-                style: GoogleFonts.lexend(
-                    textStyle: const TextStyle(color: midnightblue)),
-              ),
-            ),
-            const SizedBox(height: 5),
-            TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const RegisterPage()),
-                );
-              },
-              child: Text(
                 'Register',
                 style: GoogleFonts.lexend(
                     textStyle: const TextStyle(color: midnightblue)),
               ),
             ),
+            const SizedBox(height: 10),
           ],
         ),
       ),
