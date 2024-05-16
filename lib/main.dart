@@ -10,9 +10,9 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: LoginPage()//HomePage(),LoginPage(),RegisterPage()
-    );
+    return const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: LoginPage() //HomePage(),LoginPage(),RegisterPage()
+        );
   }
 }

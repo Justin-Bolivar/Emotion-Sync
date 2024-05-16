@@ -1,7 +1,9 @@
+import 'package:emotion_sync/homepage.dart';
 import 'package:emotion_sync/registerpage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:emotion_sync/colors.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key});
@@ -13,6 +15,45 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  Future<void> _login() async {
+    final url = Uri.parse('http://127.0.0.1:8000/account/login/');
+    final response = await http.post(
+      url,
+      body: {
+        'username': _usernameController.text,
+        'password': _passwordController.text,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Welcome Back!',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: success,
+        ),
+      );
+
+      print('Login successful');
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Account non existent or incorrect password. Please try again.',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: error,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // LOGIC
+                _login();
               },
               style: ElevatedButton.styleFrom(
                   backgroundColor: primary,

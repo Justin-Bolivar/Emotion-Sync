@@ -1,6 +1,8 @@
+import 'package:emotion_sync/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:emotion_sync/colors.dart';
+import 'package:http/http.dart' as http;
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key});
@@ -14,6 +16,46 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _password2Controller = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
+
+  Future<void> _register() async {
+    final url = Uri.parse('http://127.0.0.1:8000/account/register/');
+    final response = await http.post(
+      url,
+      body: {
+        'username': _usernameController.text,
+        'email': _emailController.text,
+        'password': _passwordController.text,
+        'password2': _password2Controller.text,
+      },
+    );
+
+    if (response.statusCode == 200) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Account Registered Successfully!',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: success,
+        ),
+      );
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => HomePage()),
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Registration failed!.',
+            style: TextStyle(color: Colors.white),
+          ),
+          backgroundColor: error,
+        ),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +100,7 @@ class _RegisterPageState extends State<RegisterPage> {
             const SizedBox(height: 20),
             TextField(
               controller: _password2Controller,
+              obscureText: true,
               decoration: InputDecoration(
                 hintText: 'Confirm Password',
                 hintStyle: GoogleFonts.frederickaTheGreat(),
@@ -66,7 +109,7 @@ class _RegisterPageState extends State<RegisterPage> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                // LOGIC
+                _register();
               },
               style: ElevatedButton.styleFrom(
                   backgroundColor: primary,
