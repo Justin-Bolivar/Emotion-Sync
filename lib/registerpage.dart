@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, use_key_in_widget_constructors
+
 import 'package:emotion_sync/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -34,7 +36,7 @@ class _RegisterPageState extends State<RegisterPage> {
         const SnackBar(
           content: Text(
             'Account Registered Successfully!',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: white),
           ),
           backgroundColor: success,
         ),
@@ -49,7 +51,7 @@ class _RegisterPageState extends State<RegisterPage> {
         const SnackBar(
           content: Text(
             'Registration failed!.',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: white),
           ),
           backgroundColor: error,
         ),

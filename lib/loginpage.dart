@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously, use_key_in_widget_constructors
+
 import 'package:emotion_sync/homepage.dart';
 import 'package:emotion_sync/registerpage.dart';
 import 'package:flutter/material.dart';
@@ -31,13 +33,11 @@ class _LoginPageState extends State<LoginPage> {
         const SnackBar(
           content: Text(
             'Welcome Back!',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: white),
           ),
           backgroundColor: success,
         ),
       );
-
-      print('Login successful');
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),
@@ -47,7 +47,7 @@ class _LoginPageState extends State<LoginPage> {
         const SnackBar(
           content: Text(
             'Account non existent or incorrect password. Please try again.',
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: white),
           ),
           backgroundColor: error,
         ),
