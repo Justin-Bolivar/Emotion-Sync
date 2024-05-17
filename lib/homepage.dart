@@ -34,25 +34,12 @@ class _HomePageState extends State<HomePage>
   List<String> dates = [];
   List<int> ids = [];
   List<String> topEmotions = [];
-  late AnimationController _animationController;
-  late Animation<double> _animation;
-  int bpm = 80;
-  late Timer _timer;
   bool _isLoading = true;
 
   @override
   void initState() {
     super.initState();
     _fetchDates();
-    _initAnimation();
-    _startBPMUpdate();
-  }
-
-  @override
-  void dispose() {
-    _animationController.dispose();
-    _timer.cancel();
-    super.dispose();
   }
 
   Future<void> _fetchDates() async {
@@ -72,44 +59,18 @@ class _HomePageState extends State<HomePage>
       } else {
         print('Failed to load dates: ${response.statusCode}');
       }
+      setState(() {
+        _isLoading = false;
+      });
     } catch (e) {
       print('Error fetching dates: $e');
-    } finally {
-      _isLoading = false;
     }
-  }
-
-  void _initAnimation() {
-    _animationController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 500),
-    )..repeat(reverse: true);
-
-    _animation = Tween<double>(begin: 1.0, end: 1.3).animate(
-      CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
-    );
-  }
-
-  void _startBPMUpdate() {
-    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      setState(() {
-        bpm = Random().nextInt(21) + 70;
-      });
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: white,
-      appBar: AppBar(
-        toolbarHeight: 100.0,
-        backgroundColor: white,
-        title: Padding(
-          padding: const EdgeInsets.only(top: 50.0),
-          child: _buildBPMDisplay(),
-        ),
-      ),
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -122,14 +83,18 @@ class _HomePageState extends State<HomePage>
                   child: Center(
                     child: Column(
                       children: [
-                        const Text('Recent Journals',
-                            style: TextStyle(
-                                fontSize: 30.0,
-                                fontWeight: FontWeight.bold,
-                                color: secondary)),
-                        const SizedBox(height: 20.0),
-                        ...List.generate(dates.length, _buildJournalCard),
-                        const SizedBox(height: 100.0),
+                        Center(
+                          child: Column(children: [
+                            const Text('Recent Journals',
+                                style: TextStyle(
+                                    fontSize: 30.0,
+                                    fontWeight: FontWeight.bold,
+                                    color: secondary)),
+                            const SizedBox(height: 20.0),
+                            ...List.generate(dates.length, _buildJournalCard),
+                            const SizedBox(height: 100.0),
+                          ]),
+                        ),
                       ],
                     ),
                   ),
@@ -168,43 +133,6 @@ class _HomePageState extends State<HomePage>
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-    );
-  }
-
-  Widget _buildBPMDisplay() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        AnimatedBuilder(
-          animation: _animation,
-          builder: (BuildContext context, Widget? child) {
-            return Transform.scale(
-              scale: _animation.value,
-              child: const Icon(
-                Icons.favorite,
-                color: Colors.red,
-                size: 50.0,
-              ),
-            );
-          },
-        ),
-        const SizedBox(width: 10.0),
-        Text(
-          '$bpm',
-          style: const TextStyle(
-            color: Colors.red,
-            fontSize: 50.0,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        const SizedBox(width: 5.0),
-        const Text(
-          'bpm',
-          style: TextStyle(
-            fontSize: 20.0,
-          ),
-        ),
-      ],
     );
   }
 
@@ -264,21 +192,28 @@ class _HomePageState extends State<HomePage>
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
-          month,
-          style: const TextStyle(
-            fontSize: 30.0,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFFFFFBF0),
-          ),
-        ),
-        Text(
-          day,
-          style: const TextStyle(
-            fontSize: 40.0,
-            color: Color(0xFFFFFBF0),
-          ),
-        ),
+        Stack(
+          children: [
+            Text(
+              month,
+              style: const TextStyle(
+                fontSize: 30.0,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFFFFFBF0),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 40.0, left: 5.0),
+              child: Text(
+                day,
+                style: const TextStyle(
+                  fontSize: 40.0,
+                  color: Color(0xFFFFFBF0),
+                ),
+              ),
+            ),
+          ],
+        )
       ],
     );
   }
