@@ -46,7 +46,7 @@ class _LoginPageState extends State<LoginPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text(
-            'Account non existent or incorrect password. Please try again.',
+            'Account does not exist or incorrect password. Please try again.',
             style: TextStyle(color: white),
           ),
           backgroundColor: error,

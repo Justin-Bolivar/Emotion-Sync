@@ -13,13 +13,3 @@ class JournalSerializer(ModelSerializer):
         thoughts = obj.thoughts
         emotions = getEmotion(thoughts)
         return emotions
-
-# class EmotionSerializer(serializers.ModelSerializer):
-#     emotions = serializers.SerializerMethodField(read_only=True, required=False)
-#     class Meta:
-#         model = Journal
-#         fields = ('id', 'thoughts', 'emotions')
-#     def get_emotions(self, obj):
-#         thoughts = obj.thoughts
-#         emotions = getEmotion(thoughts)
-#         return emotions
